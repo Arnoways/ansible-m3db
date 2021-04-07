@@ -1,2 +1,17 @@
 ---
 # handlers file for m3db
+
+- name: reload sysctl.conf
+  command: /sbin/sysctl --system
+
+- name: Restart m3coordinator
+  systemd:
+    daemon_reload: true
+    name: m3coordinator
+    state: restarted
+
+- name: Restart m3dbnode
+  systemd:
+    daemon_reload: true
+    name: m3dbnode
+    state: restarted

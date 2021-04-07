@@ -1,0 +1,90 @@
+---
+# https://m3db.io/docs/reference/m3coordinator/config_file/
+{{ ansible_managed | comment }}
+
+{{m3coordinator_global}}
+
+{%if m3coordinator_metrics != [] %}
+metrics:
+  {{ m3coordinator_metrics | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_logging != [] %}
+logging:
+  {{ m3coordinator_logging | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_tracing != [] %}
+tracing:
+  {{ m3coordinator_tracing | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_clusterManagement != [] %}
+clusterManagement:
+  {{ m3coordinator_clusterManagement | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_filter != [] %}
+filter:
+  {{ m3coordinator_filter | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_rpc != [] %}
+rpc:
+  {{ m3coordinator_rpc | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_readWorkerPoolPolicy != [] %}
+readWorkerPoolPolicy:
+  {{ m3coordinator_readWorkerPoolPolicy | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_writeWorkerPoolPolicy != [] %}
+writeWorkerPoolPolicy:
+  {{ m3coordinator_writeWorkerPoolPolicy | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_writeForwarding != [] %}
+writeForwarding:
+  {{ m3coordinator_writeForwarding | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_downsample != [] %}
+downsample:
+  {{ m3coordinator_downsample | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_ingest != [] %}
+ingest:
+  {{ m3coordinator_ingest | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_carbon != [] %}
+carbon:
+  {{ m3coordinator_carbon | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_query != [] %}
+query:
+  {{ m3coordinator_query | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_limits != [] %}
+limits:
+  {{ m3coordinator_limits | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_resultOptions != [] %}
+resultOptions:
+  {{ m3coordinator_resultOptions | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_multiProcess != [] %}
+multiProcess:
+  {{ m3coordinator_multiProcess | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}
+
+{%if m3coordinator_debug != [] %}
+debug:
+  {{ m3coordinator_debug | to_nice_yaml(indent=2) | indent(2, False) }}
+{% endif %}

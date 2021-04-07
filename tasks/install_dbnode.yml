@@ -1,0 +1,19 @@
+---
+- name: Deploy m3db node config file
+  template:
+    src: m3dbnode.yml.j2
+    dest: "{{ m3db_config_folder }}/m3dbnode.yml"
+    owner: "{{ m3db_system_user }}"
+    group: "{{ m3db_system_group }}"
+    mode: 0644
+  notify:
+    - m3dbnode
+
+- name: Create systemd unit file for m3dbnode
+  template:
+    src: m3dbnode.service.j2
+    dest: /etc/systemd/system/m3dbnode.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart m3dbnode service
