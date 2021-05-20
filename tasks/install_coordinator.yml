@@ -1,13 +1,13 @@
 ---
 - name: Deploy coordinator config file
   template:
-    src: m3coordinator.yml.j2
+    src: m3coordinator.yml
     dest: "{{ m3db_config_folder }}/m3coordinator.yml"
     owner: "{{ m3db_system_user }}"
     group: "{{ m3db_system_group }}"
     mode: 0644
   notify:
-    - m3coordinator
+    - Restart m3coordinator
 
 - name: Create systemd unit file for coordinator
   template:
@@ -16,4 +16,4 @@
     owner: root
     group: root
     mode: 0644
-  notify: Restart m3coordinator service
+  notify: Restart m3coordinator

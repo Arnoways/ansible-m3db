@@ -13,6 +13,8 @@ m3db_binaries: "/usr/local/bin/m3db-{{m3db_version}}/"
 m3db_system_group: m3db
 m3db_system_user: m3db
 m3db_config_folder: /etc/m3db
+m3db_data_dir: /var/lib/m3db
+m3db_kv_dir: /var/lib/m3kv
 
 ## sysctl
 ## https://m3db.io/docs/operational_guide/kernel_configuration/
@@ -22,6 +24,9 @@ custom_sysctl:
   - {name: fs.file-max, value: 3000000}
   - {name: fs.nr_open, value: 3000000}
 
+## m3db expect an high value
+# max value for RLIMIT_NOFILE(524288) is below recommended threshold(3000000)
+m3db_limitnofile: 3000000
 
 # coordinator
 m3coordinator_config_file: /etc/m3db/m3coordinator.yml
@@ -43,3 +48,43 @@ m3db_global:
   httpClusterListenAddress: "0.0.0.0:9003"
   debugListenAddress: "0.0.0.0:9004"
 
+m3coordinator_metrics: []
+m3coordinator_logging: []
+m3coordinator_tracing: []
+m3coordinator_clusterManagement: []
+m3coordinator_filter: []
+m3coordinator_rpc: []
+m3coordinator_readWorkerPoolPolicy: []
+m3coordinator_writeWorkerPoolPolicy: []
+m3coordinator_writeForwarding: []
+m3coordinator_downsample: []
+m3coordinator_ingest: []
+m3coordinator_carbon: []
+m3coordinator_query: []
+m3coordinator_limits: []
+m3coordinator_resultOptions: []
+m3coordinator_multiProcess: []
+m3coordinator_debug: []
+
+m3db_index: []
+m3db_transforms: []
+m3db_logging: []
+m3db_metrics: []
+m3db_hostID: []
+m3db_client: []
+m3db_tick: []
+m3db_bootstrap: []
+m3db_blockRetrieve: []
+m3db_cache: []
+m3db_commitlog: []
+m3db_filesystem: []
+m3db_replication: []
+m3db_pooling: []
+m3db_hashing: []
+m3db_proto: []
+m3db_tracing: []
+m3db_limits: []
+m3db_wide: []
+m3db_tchannel: []
+m3db_debug: []
+m3db_discovery: []

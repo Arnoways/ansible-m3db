@@ -16,26 +16,23 @@
     createhome: false
   when: m3db_system_user != "root"
 
-- name: Creating {{ m3db_binaries }}
+- name: Creating m3db directories
   file:
-    path: "{{ m3db_binaries }}"
+    path: "{{ item }}"
     state: directory
-    mode: '0755'
+    mode: '0750'
     owner: "{{ m3db_system_user }}"
     group: "{{ m3db_system_group }}"
-
-- name: Creating {{ m3db_config_folder }}
-  file:
-    path: "{{ m3db_config_folder }}"
-    state: directory
-    mode: '0755'
-    owner: "{{ m3db_system_user }}"
-    group: "{{ m3db_system_group }}"
+  loop:
+    - "{{ m3db_binaries }}"
+    - "{{ m3db_config_folder }}"
+    - "{{ m3db_data_dir }}"
+    - "{{ m3db_kv_dir }}"
 
 - name: Download sources from {{ m3db_download_url }}
-  unarchive: 
+  unarchive:
     src: "{{ m3db_download_url }}"
-    dest: "/tmp/m3db"
+    dest: "/tmp/"
     owner: "{{ m3db_system_user }}"
     group: "{{ m3db_system_group }}"
     remote_src: true
@@ -44,9 +41,10 @@
 
 - name: Extract binaries
   copy:
-    src: "/tmp/m3db/{{ m3db_binaries_folder_name }}/"
+    src: "/tmp/{{ m3db_binaries_folder_name }}/"
+    remote_src: true
     dest: "{{ m3db_binaries }}/"
-    mode: '0755'
+    mode: '0750'
     owner: "{{ m3db_system_user }}"
     group: "{{ m3db_system_group }}"
 
@@ -55,8 +53,8 @@
     name: "{{ item.name }}"
     value: "{{ item.value }}"
     state: present
-    sysctl_file: /etc/systctl.d/99-m3db-custom_tune.conf
-    reload: no
+    # sysctl_file: /etc/systctl.d/99-m3db-custom_tune.conf
+    reload: false
   with_items: "{{ custom_sysctl }}"
   notify:
     - reload sysctl.conf

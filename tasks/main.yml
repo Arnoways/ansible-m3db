@@ -1,6 +1,6 @@
 ---
 # tasks file for m3db
-- import_tasks: preinstall.yml
+- include_tasks: preinstall.yml
   args:
     apply:
       tags:
@@ -10,23 +10,22 @@
     - install_coordinator
     - install_dbnode
 
-# - name: Deploy coordinator
-#   include_tasks: install_coordinator.yml
-#   args:
-#     apply:
-#       tags:
-#         - install_coordinator
-#   tags:
-#     - install_coordinator
-#   when: inventory_hostname in groups['m3coordinator']
+- name: Deploy coordinator
+  include_tasks: install_coordinator.yml
+  args:
+    apply:
+      tags:
+        - install_coordinator
+  tags:
+    - install_coordinator
+  when: inventory_hostname in groups['m3coordinator']
 
-# - name: Deploy dbnode
-#   include_tasks: install_dbnode.yml
-#   args:
-#     apply:
-#       tags:
-#         - install_dbnode
-#   tags:
-#     - install_dbnode
-#   when: inventory_hostname in groups['m3dbnode']
-
+- name: Deploy dbnode
+  include_tasks: install_dbnode.yml
+  args:
+    apply:
+      tags:
+        - install_dbnode
+  tags:
+    - install_dbnode
+  when: inventory_hostname in groups['m3dbnode']

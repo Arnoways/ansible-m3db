@@ -1,0 +1,78 @@
+root@m3-coordinator-1:~# history
+    1  systemctl status m3coordinator.service
+    2  chmod +x /usr/local/bin/m3db-1.1.0/m3*
+    3  systemctl start m3coordinator.service
+    4  journalctl -fu m3coordinator.service
+    5  ls
+    6  sysctl -w vm.max_map_count=3000000
+    7  sysctl -w vm.swappiness=1
+    8  systemctl restart m3coordinator.service
+    9  journalctl -fu m3coordinator.service
+   10  sysctl -w fs.file-max=3000000
+   11  sysctl -w fs.nr_open=3000000
+   12  systemctl restart m3coordinator.service
+   13  journalctl -fu m3coordinator.service
+   14  history
+   la ça marche
+
+root@m3-dbnode-3:~# history
+    1  chmod +x /usr/local/bin/m3db-1.1.0/m3*
+    2  systemctl status m3dbnode.service
+    3  sysctl -w vm.max_map_count=3000000
+    4  sysctl -w vm.swappiness=1
+    5  systemctl restart m3dbnode
+    6  journalctl -fu m3dbnode
+    7  sysctl -w fs.file-max=3000000
+    8  sysctl -w fs.nr_open=3000000
+    9  systemctl restart m3dbnode
+   10  journalctl -fu m3dbnode
+   11  history
+
+root@m3-dbnode-2:~# history
+    1  chmod +x /usr/local/bin/m3db-1.1.0/m3*
+    2  systemctl status m3dbnode.service
+    3  journalctl -fu m3dbnode
+    4  sysctl -w vm.max_map_count=3000000
+    5  sysctl -w vm.swappiness=1
+    6  systemctl restart m3dbnode
+    7  journalctl -fu m3dbnode
+    8  cat /proc/3085/limits
+    9  vim /etc/security/limits.conf
+   10  ulimit -Hn
+   11  sysctl -w fs.file-max=3000000
+   12  ulimit -Hn
+   13  ulimit -n 3000000
+   14  systemctl status m3dbnode.service
+   15  vim /etc/systemd/system/m3dbnode.service
+   16  systemctl status m3dbnode.service
+   17  sysctl -w fs.file-max=3000000
+   18  sysctl -w fs.nr_open=3000000
+   19  systemctl restart m3dbnode
+   20  systemctl status m3dbnode.service
+   21  journalctl -fu m3dbnode.service
+   22  history
+   23  systemctl restart m3dbnode
+   24  journalctl -fu m3dbnode.service
+   25  history
+
+root@m3-dbnode-1:~# history
+    1  chmod +x /usr/local/bin/m3db-1.1.0/m3*
+    2  systemctl status m3dbnode.service
+    3  cat /etc/sysctl.conf
+    4  sysctl -w fs.file-max=3000000
+    5  cat /etc/sysctl.conf
+    6  journalctl -fu m3dbnode
+    7  systemctl status m3dbnode.service
+    8  vim /etc/systemd/system/m3dbnode.service
+    9  vim /etc/systemd/system/m3dbnode.service
+   10  systemctl daemon-reload
+   11  journalctl -fu m3dbnode
+   12  sysctl -w vm.max_map_count=3000000
+   13  sysctl -w vm.swappiness=1
+   14  systemctl restart m3dbnode
+   15  journalctl -fu m3dbnode
+   16  sysctl -w fs.file-max=3000000
+   17  sysctl -w fs.nr_open=3000000
+   18  systemctl restart m3dbnode
+   19  journalctl -fu m3dbnode
+   20  history
