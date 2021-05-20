@@ -1,4 +1,13 @@
 ---
+- name: Extract coordinator binary
+  copy:
+    src: "/tmp/{{ m3db_binaries_folder_name }}/m3coordinator"
+    dest: "{{ m3db_binaries }}/"
+    mode: '0750'
+    owner: "{{ m3db_system_user }}"
+    group: "{{ m3db_system_group }}"
+    remote_src: true
+
 - name: Deploy coordinator config file
   template:
     src: m3coordinator.yml.j2
@@ -6,8 +15,7 @@
     owner: "{{ m3db_system_user }}"
     group: "{{ m3db_system_group }}"
     mode: 0644
-  notify:
-    - m3coordinator
+  notify: Restart m3coordinator
 
 - name: Create systemd unit file for coordinator
   template:
@@ -16,4 +24,4 @@
     owner: root
     group: root
     mode: 0644
-  notify: Restart m3coordinator service
+  notify: Restart m3coordinator

@@ -1,4 +1,13 @@
 ---
+- name: Extract dbnode binary
+  copy:
+    src: "/tmp/{{ m3db_binaries_folder_name }}/m3dbnode"
+    dest: "{{ m3db_binaries }}/"
+    mode: '0750'
+    owner: "{{ m3db_system_user }}"
+    group: "{{ m3db_system_group }}"
+    remote_src: true
+
 - name: Deploy m3db node config file
   template:
     src: m3dbnode.yml.j2
@@ -6,8 +15,7 @@
     owner: "{{ m3db_system_user }}"
     group: "{{ m3db_system_group }}"
     mode: 0644
-  notify:
-    - m3dbnode
+  notify: Restart m3dbnode
 
 - name: Create systemd unit file for m3dbnode
   template:
@@ -16,4 +24,4 @@
     owner: root
     group: root
     mode: 0644
-  notify: Restart m3dbnode service
+  notify: Restart m3dbnode
