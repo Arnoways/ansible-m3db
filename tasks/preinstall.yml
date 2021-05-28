@@ -1,0 +1,39 @@
+---
+- name: Create m3db system group
+  group:
+    name: "{{ m3db_system_group }}"
+    state: present
+    system: true
+  when: m3db_system_group != "root"
+
+- name: Create m3db system user
+  user:
+    name: "{{ m3db_system_user }}"
+    groups: "{{ m3db_system_group }}"
+    append: true
+    shell: /sbin/nologin
+    system: true
+    createhome: false
+  when: m3db_system_user != "root"
+
+- name: Creating m3db directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0750'
+    owner: "{{ m3db_system_user }}"
+    group: "{{ m3db_system_group }}"
+  loop:
+    - "{{ m3db_config_folder }}"
+    - "{{ m3db_data_dir }}"
+    - "{{ m3db_kv_dir }}"
+
+- name: Download sources from {{ m3db_download_url }}
+  unarchive: 
+    src: "{{ m3db_download_url }}"
+    dest: "/tmp/"
+    owner: "{{ m3db_system_user }}"
+    group: "{{ m3db_system_group }}"
+    remote_src: true
+  when:
+    - not ansible_check_mode

@@ -1,0 +1,38 @@
+---
+# https://github.com/m3db/m3/blob/v{{m3db_version}}/src/aggregator/config/m3aggregator.yml
+{{ ansible_managed | comment }}
+
+{%if m3aggregator_logging != [] %}
+logging:
+  {{ m3aggregator_logging | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3aggregator_metrics != [] %}
+metrics:
+  {{ m3aggregator_metrics | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3aggregator_http != [] %}
+http:
+  {{ m3aggregator_http | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3aggregator_rawtcp != [] %}
+rawtcp:
+  {{ m3aggregator_rawtcp | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3aggregator_kvClient != [] %}
+kvClient:
+  {{ m3aggregator_kvClient | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3aggregator_runtimeOptions != [] %}
+runtimeOptions:
+  {{ m3aggregator_runtimeOptions | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3aggregator_aggregator != [] %}
+aggregator:
+  {{ m3aggregator_aggregator | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}

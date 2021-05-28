@@ -1,0 +1,474 @@
+---
+# defaults file for m3db
+
+# general
+## sources
+m3db_version: 1.1.0
+m3db_github_release: https://github.com/m3db/m3/releases/download
+m3db_binaries_folder_name: "m3_{{m3db_version}}_linux_amd64"
+m3db_download_url: "{{m3db_github_release}}/v{{m3db_version}}/{{m3db_binaries_folder_name}}.tar.gz"
+
+## system
+m3db_binaries: "/usr/local/bin/"
+m3db_system_group: m3db
+m3db_system_user: m3db
+m3db_config_folder: /etc/m3db
+m3db_data_dir: /var/lib/m3db
+m3db_kv_dir: /var/lib/m3kv
+
+## sysctl
+## https://m3db.io/docs/operational_guide/kernel_configuration/
+custom_sysctl:
+  - {name: vm.max_map_count, value: '3000000'}
+  - {name: vm.swappiness, value: '1'}
+  - {name: fs.file-max, value: '3000000'}
+  - {name: fs.nr_open, value: '3000000'}
+
+
+## m3db expect an high value
+# max value for RLIMIT_NOFILE(524288) is below recommended threshold(3000000)
+m3db_limitnofile: 3000000
+
+# m3db_namespace_name: default
+# m3db_namespace_retentionTime: 30d
+# m3db_namespace_numShards: 64 # voir doc sur RF & nb of shards.
+# m3db_namespace_replicationFactor: 3
+# m3db_namespace_zone: embedded
+
+# coordinator
+m3coordinator_config_file: /etc/m3db/m3coordinator.yml
+
+m3coordinator_global:
+  listenAddress: 0.0.0.0:7201
+m3coordinator_metrics:
+  scope:
+    prefix: "coordinator"
+  prometheus:
+    handlerPath: /metrics
+    listenAddress: 0.0.0.0:7203
+  sanitization: prometheus
+  samplingRate: 1.0
+  extended: none
+m3coordinator_logging:
+  level: info
+m3coordinator_tracing: []
+m3coordinator_clusters:
+  - namespaces:
+    - namespace: default
+      retention: 96h
+      type: aggregated
+      downsample:
+        all: false
+    - namespace: test
+      retention: 24h
+      type: unaggregated
+    client:
+      config:
+        service:
+          env: default_env
+          zone: embedded
+          cacheDir: /var/lib/m3kv
+          service: m3db
+          etcdClusters:
+            - zone: embedded
+              endpoints: "{{ groups['etcd_master'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | map('regex_replace', '^(.*)', '\\1:2379') | list }}"
+      writeConsistencyLevel: majority
+      readConsistencyLevel: unstrict_majority        
+m3coordinator_filter: []
+m3coordinator_rpc: []
+m3coordinator_readWorkerPoolPolicy: []
+m3coordinator_writeWorkerPoolPolicy: []
+m3coordinator_writeForwarding: []
+m3coordinator_downsample: []
+  # remoteAggregator:
+  #   client:
+  #     type: m3msg
+  #     m3msg:
+  #       producer:
+  #         writer:
+  #           topicName: aggregator_ingest
+  #           topicServiceOverride:
+  #             environment: default_env
+  #             zone: embedded
+  #           placement:
+  #             isStaged: true
+  #           placementServiceOverride:
+  #             namespaces:
+  #               placement: /placement
+  #           connection:
+  #             numConnections: 4
+  #           messagePool:
+  #             size: 16384
+  #             watermark:
+  #               low: 0.2
+  #               high: 0.5
+m3coordinator_ingest: []
+  # ingester:
+  #   workerPoolSize: 10000
+  #   opPool:
+  #     size: 10000
+  #   retry:
+  #     maxRetries: 3
+  #     jitter: true
+  #   logSampleRate: 0.1
+  # m3msg:
+  #   server:
+  #     listenAddress: 0.0.0.0:7507
+  #     retry:
+  #       maxBackoff: 10s
+  #       jitter: true 
+m3coordinator_carbon: []
+m3coordinator_query: []
+m3coordinator_limits: []
+m3coordinator_resultOptions: []
+m3coordinator_multiProcess: []
+m3coordinator_debug: []
+
+# node
+m3dbnode_config_file: /etc/m3db/m3dbnode.yml
+
+m3db_global:
+  clusterListenAddress: 0.0.0.0:9001
+  debugListenAddress: 0.0.0.0:9004
+  gcPercentage: 100
+  httpClusterListenAddress: 0.0.0.0:9003
+  httpNodeListenAddress: 0.0.0.0:9002
+  listenAddress: 0.0.0.0:9000
+  writeNewSeriesAsync: true
+  writeNewSeriesBackoffDuration: 2ms
+m3db_index: []
+m3db_transforms: []
+m3db_logging:
+  level: info
+m3db_metrics:
+  prometheus:
+    handlerPath: /metrics
+    listenAddress: 0.0.0.0:7203
+  sanitization: prometheus
+  samplingRate: 1.0
+  extended: detailed
+m3db_hostID:
+  resolver: hostname
+m3db_client:
+  writeConsistencyLevel: majority
+  readConsistencyLevel: unstrict_majority
+m3db_tick: []
+m3db_bootstrap: []
+m3db_blockRetrieve: []
+m3db_cache: []
+m3db_commitlog:
+  flushEvery: 1s
+  flushMaxBytes: 524288
+  queue:
+    calculationType: fixed
+    size: 2097152
+m3db_filesystem:
+  filePathPrefix: /var/lib/m3db
+m3db_replication: []
+m3db_pooling: []
+m3db_hashing: []
+m3db_proto: []
+m3db_tracing: []
+m3db_limits: []
+m3db_wide: []
+m3db_tchannel: []
+m3db_debug: []
+m3db_config: []
+m3db_discovery:
+  config:
+    service:
+      env: default_env
+      zone: embedded
+      service: m3db
+      cacheDir: /var/lib/m3kv
+      etcdClusters:
+        - zone: embedded
+          endpoints: "{{ groups['etcd_master'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | map('regex_replace', '^(.*)', '\\1:2379') | list }}"
+          
+
+# aggregator
+m3aggregator_config_file: /etc/m3db/m3aggregator.yml
+
+m3aggregator_logging:
+  level: info
+m3aggregator_metrics:
+  scope:
+    prefix: m3aggregator
+  prometheus:
+    onError: none
+    handlerPath: /metrics
+    listenAddress: 0.0.0.0:6002
+    timerType: histogram
+  sanitization: prometheus
+  samplingRate: 1.0
+  extended: none
+m3aggregator_http:
+  listenAddress: 0.0.0.0:6001
+  readTimeout: 60s
+  writeTimeout: 60s
+m3aggregator_rawtcp:
+  listenAddress: 0.0.0.0:6000
+  keepAliveEnabled: true
+  keepAlivePeriod: 1m
+  retry:
+    initialBackoff: 5ms
+    backoffFactor: 2.0
+    maxBackoff: 1s
+    forever: true
+    jitter: true
+  readBufferSize: 65536
+  protobufIterator:
+    initBufferSize: 1440
+    maxMessageSize: 50000000
+m3aggregator_kvClient:
+  etcd:
+    env: default_env
+    zone: embedded
+    service: m3aggregator
+    cacheDir: /var/lib/m3kv
+    etcdClusters:
+      - zone: embedded
+        endpoints: "{{ groups['etcd_master'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | map('regex_replace', '^(.*)', '\\1:2379') | list }}"
+m3aggregator_runtimeOptions:
+  kvConfig:
+    environment: default_env
+    zone: embedded
+  writeValuesPerMetricLimitPerSecondKey: write-values-per-metric-limit-per-second
+  writeValuesPerMetricLimitPerSecond: 0
+  writeNewMetricLimitClusterPerSecondKey: write-new-metric-limit-cluster-per-second
+  writeNewMetricLimitClusterPerSecond: 0
+  writeNewMetricNoLimitWarmupDuration: 0
+m3aggregator_aggregator:
+  hostID:
+    resolver: hostname
+  instanceID:
+    type: host_id
+  metricPrefix: ""
+  counterPrefix: ""
+  timerPrefix: ""
+  gaugePrefix: ""
+  aggregationTypes:
+    counterTransformFnType: empty
+    timerTransformFnType: suffix
+    gaugeTransformFnType: empty
+    aggregationTypesPool:
+      size: 1024
+    quantilesPool:
+      buckets:
+        - count: 256
+          capacity: 4
+        - count: 128
+          capacity: 8
+  stream:
+    eps: 0.001
+    capacity: 32
+    streamPool:
+      size: 4096
+    samplePool:
+      size: 4096
+    floatsPool:
+      buckets:
+        - count: 4096
+          capacity: 16
+        - count: 2048
+          capacity: 32
+        - count: 1024
+          capacity: 64
+  client:
+    placementKV:
+      namespace: /placement
+      zone: embedded
+      environment: default_env
+    placementWatcher:
+      key: m3aggregator
+      initWatchTimeout: 15s
+    hashType: murmur32
+    shardCutoffLingerDuration: 1m
+    encoder:
+      initBufferSize: 100
+      maxMessageSize: 50000000
+      bytesPool:
+        buckets:
+          - capacity: 16
+            count: 10
+          - capacity: 32
+            count: 20
+        watermark:
+          low: 0.001
+          high: 0.01
+    flushSize: 1440
+    maxTimerBatchSize: 140
+    queueSize: 1000
+    queueDropType: oldest
+    connection:
+      connectionTimeout: 1s
+      connectionKeepAlive: true
+      writeTimeout: 1s
+      initReconnectThreshold: 2
+      maxReconnectThreshold: 5000
+      reconnectThresholdMultiplier: 2
+      maxReconnectDuration: 1m
+  placementManager:
+    kvConfig:
+      namespace: /placement
+      environment: default_env
+      zone: embedded
+    placementWatcher:
+      key: m3aggregator
+      initWatchTimeout: 10s
+  hashType: murmur32
+  bufferDurationBeforeShardCutover: 10m
+  bufferDurationAfterShardCutoff: 10m
+  resignTimeout: 1m
+  flushTimesManager:
+    kvConfig:
+      environment: default_env
+      zone: embedded
+    flushTimesKeyFmt: shardset/%d/flush
+    flushTimesPersistRetrier:
+      initialBackoff: 100ms
+      backoffFactor: 2.0
+      maxBackoff: 2s
+      maxRetries: 3
+  electionManager:
+    election:
+      leaderTimeout: 10s
+      resignTimeout: 10s
+      ttlSeconds: 10
+    serviceID:
+      name: m3aggregator
+      environment: default_env
+      zone: embedded
+    electionKeyFmt: shardset/%d/lock
+    campaignRetrier:
+      initialBackoff: 100ms
+      backoffFactor: 2.0
+      maxBackoff: 2s
+      forever: true
+      jitter: true
+    changeRetrier:
+      initialBackoff: 100ms
+      backoffFactor: 2.0
+      maxBackoff: 5s
+      forever: true
+      jitter: true
+    resignRetrier:
+      initialBackoff: 100ms
+      backoffFactor: 2.0
+      maxBackoff: 5s
+      forever: true
+      jitter: true
+    campaignStateCheckInterval: 1s
+    shardCutoffCheckOffset: 30s
+  flushManager:
+    checkEvery: 1s
+    jitterEnabled: true
+    maxJitters:
+      - flushInterval: 5s
+        maxJitterPercent: 1.0
+      - flushInterval: 10s
+        maxJitterPercent: 0.5
+      - flushInterval: 1m
+        maxJitterPercent: 0.5
+      - flushInterval: 10m
+        maxJitterPercent: 0.5
+      - flushInterval: 1h
+        maxJitterPercent: 0.25
+    numWorkersPerCPU: 0.5
+    flushTimesPersistEvery: 10s
+    maxBufferSize: 5m
+    forcedFlushWindowSize: 10s
+  flush:
+    handlers:
+      - dynamicBackend:
+          name: m3msg
+          hashType: murmur32
+          producer:
+            buffer:
+              maxBufferSize: 1000000000 # max buffer before m3msg start dropping data.
+            writer:
+              topicName: aggregated_metrics
+              topicServiceOverride:
+                zone: embedded
+                environment: default_env
+              messageRetry:
+                initialBackoff: 1m
+                maxBackoff: 2m
+              messageQueueNewWritesScanInterval: 1s
+              ackErrorRetry:
+                initialBackoff: 2s
+                maxBackoff: 10s
+              connection:
+                dialTimeout: 5s
+                writeTimeout: 5s
+                retry:
+                  initialBackoff: 1s
+                  maxBackoff: 10s
+                flushInterval: 1s
+                writeBufferSize: 16384
+                readBufferSize: 256
+  forwarding:
+    maxSingleDelay: 5s
+  entryTTL: 1h
+  entryCheckInterval: 10m
+  maxTimerBatchSizePerWrite: 140
+  defaultStoragePolicies:
+    - 10s:2d
+  maxNumCachedSourceSets: 2
+  discardNaNAggregatedValues: true
+  entryPool:
+    size: 4096
+  counterElemPool:
+    size: 4096
+  timerElemPool:
+    size: 4096
+  gaugeElemPool:
+    size: 4096
+
+
+# query
+m3query_config_file: /etc/m3db/m3query.yml
+
+m3query_global:
+  listenAddress: 0.0.0.0:7201
+m3query_metrics:
+  scope:
+    prefix: "query"
+  prometheus:
+    handlerPath: /metrics
+    listenAddress: 0.0.0.0:7203
+  sanitization: prometheus
+  samplingRate: 1.0
+  extended: none
+m3query_logging:
+  level: info
+m3query_tracing: []
+m3query_clusters:
+  client:
+    config:
+      service:
+        env: default_env
+        zone: embedded
+        cacheDir: /var/lib/m3kv
+        service: m3db
+        etcdClusters:
+          - zone: embedded
+            endpoints: "{{ groups['etcd_master'] | map('extract', hostvars, ['ansible_eth1', 'ipv4', 'address']) | map('regex_replace', '^(.*)', '\\1:2379') | list }}"
+    readConsistencyLevel: unstrict_majority        
+m3query_filter: []
+m3query_rpc: []
+m3query_readWorkerPoolPolicy: []
+m3query_writeWorkerPoolPolicy: []
+m3query_writeForwarding: []
+m3query_downsample: []
+m3query_ingest: []
+m3query_carbon: []
+m3query_query:
+  timeout: 60s
+  defaultEngine: prometheus
+  prometheus:
+    maxSamplesPerQuery: 100000000
+m3query_limits: []
+m3query_resultOptions: []
+m3query_multiProcess: []
+m3query_debug: []

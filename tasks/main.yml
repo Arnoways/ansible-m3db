@@ -1,0 +1,55 @@
+---
+# tasks file for m3db
+- include_tasks: preinstall.yml
+  args:
+    apply:
+      tags:
+        - install_coordinator
+        - install_dbnode
+        - install_query
+        # - install_aggregator
+  tags:
+    - install_coordinator
+    - install_dbnode
+    - install_query
+    # - install_aggregator
+
+- name: Deploy coordinator
+  include_tasks: install_coordinator.yml
+  args:
+    apply:
+      tags:
+        - install_coordinator
+  tags:
+    - install_coordinator
+  when: inventory_hostname in groups['m3coordinator']
+
+- name: Deploy dbnode
+  include_tasks: install_dbnode.yml
+  args:
+    apply:
+      tags:
+        - install_dbnode
+  tags:
+    - install_dbnode
+  when: inventory_hostname in groups['m3dbnode']
+
+- name: Deploy m3query
+  include_tasks: install_query.yml
+  args:
+    apply:
+      tags:
+        - install_query
+  tags:
+    - install_query
+  when: inventory_hostname in groups['m3query']
+
+# - name: Deploy m3aggregator
+#   include_tasks: install_aggregator.yml
+#   args:
+#     apply:
+#       tags:
+#         - install_aggregator
+#   tags:
+#     - install_aggregator
+#   when: inventory_hostname in groups['m3aggregator']
