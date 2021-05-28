@@ -1,4 +1,13 @@
 ---
+- name: Apply recommended sysctl settings
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: false
+  with_items: "{{ custom_sysctl }}"
+  notify: Reload systctl
+
 - name: Extract dbnode binary
   copy:
     src: "/tmp/{{ m3db_binaries_folder_name }}/m3dbnode"
@@ -15,6 +24,8 @@
     owner: "{{ m3db_system_user }}"
     group: "{{ m3db_system_group }}"
     mode: 0644
+    trim_blocks: yes
+    lstrip_blocks: yes
   notify: Restart m3dbnode
 
 - name: Create systemd unit file for m3dbnode

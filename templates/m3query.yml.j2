@@ -1,0 +1,90 @@
+---
+# https://m3db.io/docs/reference/m3coordinator/config_file/
+{{ ansible_managed | comment }}
+
+{{ m3query_global | to_nice_yaml(indent=2) }}
+
+{%if m3query_metrics != [] %}
+metrics:
+  {{ m3query_metrics | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_logging != [] %}
+logging:
+  {{ m3query_logging | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_tracing != [] %}
+tracing:
+  {{ m3query_tracing | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_clusters != [] %}
+clusters:
+  {{ m3query_clusters | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_filter != [] %}
+filter:
+  {{ m3query_filter | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_rpc != [] %}
+rpc:
+  {{ m3query_rpc | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_readWorkerPoolPolicy != [] %}
+readWorkerPoolPolicy:
+  {{ m3query_readWorkerPoolPolicy | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_writeWorkerPoolPolicy != [] %}
+writeWorkerPoolPolicy:
+  {{ m3query_writeWorkerPoolPolicy | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_writeForwarding != [] %}
+writeForwarding:
+  {{ m3query_writeForwarding | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_downsample != [] %}
+downsample:
+  {{ m3query_downsample | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_ingest != [] %}
+ingest:
+  {{ m3query_ingest | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_carbon != [] %}
+carbon:
+  {{ m3query_carbon | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_query != [] %}
+query:
+  {{ m3query_query | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_limits != [] %}
+limits:
+  {{ m3query_limits | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_resultOptions != [] %}
+resultOptions:
+  {{ m3query_resultOptions | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_multiProcess != [] %}
+multiProcess:
+  {{ m3query_multiProcess | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
+
+{%if m3query_debug != [] %}
+debug:
+  {{ m3query_debug | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}

@@ -37,13 +37,3 @@
     remote_src: true
   when:
     - not ansible_check_mode
-
-- name: Apply recommended sysctl settings
-  sysctl:
-    name: "{{ item.name }}"
-    value: "{{ item.value }}"
-    state: present
-    reload: false
-  with_items: "{{ custom_sysctl }}"
-  notify:
-    - reload sysctl.conf

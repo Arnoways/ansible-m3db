@@ -3,113 +3,113 @@
 {{ ansible_managed | comment }}
 
 db:
-  {{ m3db_global | to_nice_yaml(indent=2) | indent(2, False) }}
+  {{ m3db_global | to_nice_yaml(indent=2) | indent(2) }}
 {%if m3db_index != [] %}
   index:
-    {{ m3db_index | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_index | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_transforms != [] %}
   transforms:
-    {{ m3db_transforms | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_transforms | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_logging != [] %}
   logging:
-    {{ m3db_logging | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_logging | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_metrics != [] %}
   metrics:
-    {{ m3db_metrics | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_metrics | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_hostID != [] %}
   hostID:
-    {{ m3db_hostID | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_hostID | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_client != [] %}
   client:
-    {{ m3db_client | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_client | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_tick != [] %}
   tick:
-    {{ m3db_tick | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_tick | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_bootstrap != [] %}
   bootstrap:
-    {{ m3db_bootstrap | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_bootstrap | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_blockRetrieve != [] %}
   blockRetrieve:
-    {{ m3db_blockRetrieve | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_blockRetrieve | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_cache != [] %}
   cache:
-    {{ m3db_cache | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_cache | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_commitlog != [] %}
   commitlog:
-    {{ m3db_commitlog | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_commitlog | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_filesystem != [] %}
   filesystem:
-    {{ m3db_filesystem | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_filesystem | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_replication != [] %}
   replication:
-    {{ m3db_replication | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_replication | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_pooling != [] %}
   pooling:
-    {{ m3db_pooling | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_pooling | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_hashing != [] %}
   hashing:
-    {{ m3db_hashing | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_hashing | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_proto != [] %}
   proto:
-    {{ m3db_proto | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_proto | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_tracing != [] %}
   tracing:
-    {{ m3db_tracing | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_tracing | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_limits != [] %}
   limits:
-    {{ m3db_limits | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_limits | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_wide != [] %}
   wide:
-    {{ m3db_wide | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_wide | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_tchannel != [] %}
   tchannel:
-    {{ m3db_tchannel | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_tchannel | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_debug != [] %}
   debug:
-    {{ m3db_debug | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_debug | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
 
 {%if m3db_discovery != [] %}
   discovery:
-    {{ m3db_discovery | to_nice_yaml(indent=2) | indent(2, False) }}
+    {{ m3db_discovery | to_nice_yaml(indent=2) | indent(4) }}
 {% endif %}
